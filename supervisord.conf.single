@@ -2,6 +2,16 @@
 nodaemon=true
 loglevel=debug
 
+[program:zookeeper]
+command=/usr/local/zookeeper/bin/zkServer.sh start-foreground
+user=daemon
+priority=0
+
+[program:mysql]
+command=/usr/bin/pidproxy /var/run/mysqld/mysqld.pid /usr/bin/mysqld_safe
+user=mysql
+priority=0
+
 [program:druid-coordinator]
 user=druid
 command=java
@@ -13,7 +23,7 @@ command=java
   -Ddruid.extensions.coordinates=[\"io.druid.extensions:mysql-metadata-storage\"]
   -Ddruid.extensions.localRepository=/usr/local/druid/repository
   -Ddruid.metadata.storage.type=mysql
-  -Ddruid.metadata.storage.connector.connectURI=jdbc:mysql://"%(DRUID_MYSQL_SERVER)s:3306/%(DRUID_MYSQL_DB)s
+  -Ddruid.metadata.storage.connector.connectURI=jdbc:mysql://localhost:3306/druid
   -Ddruid.metadata.storage.connector.user=druid
   -Ddruid.metadata.storage.connector.password=diurd
   -Ddruid.coordinator.startDelay=PT5S
@@ -33,7 +43,7 @@ command=java
   -Ddruid.extensions.coordinates=[\"io.druid.extensions:mysql-metadata-storage\"]
   -Ddruid.extensions.localRepository=/usr/local/druid/repository
   -Ddruid.metadata.storage.type=mysql
-  -Ddruid.metadata.storage.connector.connectURI=jdbc:mysql://"%(DRUID_MYSQL_SERVER)s:3306/%(DRUID_MYSQL_DB)s
+  -Ddruid.metadata.storage.connector.connectURI=jdbc:mysql://localhost:3306/druid
   -Ddruid.metadata.storage.connector.user=druid
   -Ddruid.metadata.storage.connector.password=diurd
   -Ddruid.indexer.storage.type=metadata
@@ -53,8 +63,8 @@ command=java
   -Ddruid.host=%(ENV_HOSTIP)s
   -Ddruid.extensions.coordinates=[\"io.druid.extensions:druid-s3-extensions\"]
   -Ddruid.extensions.localRepository=/usr/local/druid/repository
-  -Ddruid.s3.accessKey=%(DRUID_S3_ACCESSKEY)s
-  -Ddruid.s3.secretKey=%(DRUID_S3_SECRETKEY)s
+  -Ddruid.s3.accessKey=AKIAIMKECRUYKDQGR6YQ
+  -Ddruid.s3.secretKey=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
   -Ddruid.computation.buffer.size=67108864
   -Ddruid.segmentCache.locations="[{\"path\":\"/var/tmp/druid/indexCache\",\"maxSize\":5000000000}]"
   -Ddruid.server.maxSize=5000000000
