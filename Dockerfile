@@ -76,4 +76,4 @@ EXPOSE 8082
 EXPOSE 8083
 
 WORKDIR /var/lib/druid
-ENTRYPOINT export HOSTIP="$(INSTANCE_IP)" && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+ENTRYPOINT exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
